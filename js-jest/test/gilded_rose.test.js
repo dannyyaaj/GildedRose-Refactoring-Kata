@@ -65,7 +65,6 @@ describe('Gilded Rose', function () {
     })
 
     describe('Backstage passes to a TAFKAL80ETC concert', () => {
-
       it('should increase in quality if sellIn is 11 days or more', () => {
         const gildedRose = new Shop([
           new Item('Backstage passes to a TAFKAL80ETC concert', 12, 20),
@@ -126,6 +125,41 @@ describe('Gilded Rose', function () {
         ])
         const items = gildedRose.updateQuality()
         expect(items[0].sellIn).toBe(-1)
+        expect(items[0].quality).toBe(0)
+      })
+    })
+
+    describe('conjured items', () => {
+      it('should degrade quality twice as fast as normal items', () => {
+        const gildedRose = new Shop([
+          new Item('conjured glove', 5, 10),
+          new Item('Conjured cup', 10, 20),
+          new Item('CONJURED hat', 15, 30)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(4)
+        expect(items[0].quality).toBe(8)
+
+        expect(items[1].quality).toBe(18)
+
+        expect(items[2].quality).toBe(28)
+      })
+
+      it('should degrade quality twice as fast once sellIn has passed', () => {
+        const gildedRose = new Shop([
+          new Item('conjured glove', 0, 10)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(-1)
+        expect(items[0].quality).toBe(6)
+      })
+
+      it('should never have a negative quality value', () => {
+        const gildedRose = new Shop([
+          new Item('conjured glove', 5, 1)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(4)
         expect(items[0].quality).toBe(0)
       })
     })

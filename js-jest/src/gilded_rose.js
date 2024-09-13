@@ -14,7 +14,6 @@ const ItemHandler = {
       item.quality += 1
     }
   },
-  'Sulfuras, Hand of Ragnaros': (_item) => { },
   'Backstage passes to a TAFKAL80ETC concert': (item) => {
     item.sellIn -= 1
 
@@ -32,20 +31,23 @@ const ItemHandler = {
       item.quality = 50
     }
   },
-  'default': (item) => {
+  'default': (item, decrementValue = 1) => {
     item.sellIn -= 1
 
     if (item.sellIn > 0) {
-      item.quality -= 1
+      item.quality -= decrementValue
     } else {
-      item.quality -= 2
+      item.quality -= decrementValue * 2
     }
 
     if (item.quality < 0) {
       item.quality = 0
     }
-  }
-
+  },
+  'conjured': (item) => {
+    ItemHandler.default(item, 2)
+  },
+  'Sulfuras, Hand of Ragnaros': (_item) => { },
 }
 
 class Shop {
@@ -55,11 +57,22 @@ class Shop {
   updateQuality() {
 
     this.items.forEach(item => {
-      const handleItemName = Object.hasOwn(ItemHandler, item.name) ? item.name : 'default'
+      const handleItemName = getHandlerName(item)
       ItemHandler[handleItemName](item)
     })
     return this.items
   }
+}
+
+const getHandlerName = (item) => {
+
+  if (item.name.toLowerCase().includes('conjured')) {
+    return 'conjured'
+  }
+  if (Object.hasOwn(ItemHandler, item.name)) {
+    return item.name
+  }
+  return 'default'
 }
 
 module.exports = {
