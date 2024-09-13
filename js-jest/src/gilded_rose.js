@@ -44,10 +44,10 @@ class Shop {
         default:
           item.sellIn -= 1
 
-          if (item.sellIn < 0) {
-            item.quality -= 2
-          } else {
+          if (item.sellIn > 0) {
             item.quality -= 1
+          } else {
+            item.quality -= 2
           }
 
           if (item.quality < 0) {

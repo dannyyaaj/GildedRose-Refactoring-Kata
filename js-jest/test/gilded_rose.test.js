@@ -66,37 +66,58 @@ describe('Gilded Rose', function () {
 
     describe('Backstage passes to a TAFKAL80ETC concert', () => {
 
-      it('should increase in quality if sellIn is 11 days or more - but never more than 50', () => {
+      it('should increase in quality if sellIn is 11 days or more', () => {
         const gildedRose = new Shop([
           new Item('Backstage passes to a TAFKAL80ETC concert', 12, 20),
-          new Item('Backstage passes to a TAFKAL80ETC concert', 11, 50)
         ])
         const items = gildedRose.updateQuality()
         expect(items[0].sellIn).toBe(11)
         expect(items[0].quality).toBe(21)
-        expect(items[1].quality).toBe(50)
       })
 
-      it('should increase quality value by 2 when sellIn is between 10 days and 6 - but never more than 50', () => {
+      it('should increase in quality if sellIn is 11 days or more - but never more than 50', () => {
+        const gildedRose = new Shop([
+          new Item('Backstage passes to a TAFKAL80ETC concert', 11, 50)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(10)
+        expect(items[0].quality).toBe(50)
+      })
+
+      it('should increase quality value by 2 when sellIn is between 10 days and 6', () => {
         const gildedRose = new Shop([
           new Item('Backstage passes to a TAFKAL80ETC concert', 10, 20),
-          new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49)
         ])
         const items = gildedRose.updateQuality()
         expect(items[0].sellIn).toBe(9)
         expect(items[0].quality).toBe(22)
-        expect(items[1].quality).toBe(50)
       })
 
-      it('should increase quality value by 3 when sellIn is between 5 days and 0 - but never more than 50', () => {
+      it('should increase quality value by 2 when sellIn is between 10 days and 6 - but never more than 50', () => {
+        const gildedRose = new Shop([
+          new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(9)
+        expect(items[0].quality).toBe(50)
+      })
+
+      it('should increase quality value by 3 when sellIn is between 5 days and 0', () => {
         const gildedRose = new Shop([
           new Item('Backstage passes to a TAFKAL80ETC concert', 5, 20),
-          new Item('Backstage passes to a TAFKAL80ETC concert', 5, 48)
         ])
         const items = gildedRose.updateQuality()
         expect(items[0].sellIn).toBe(4)
         expect(items[0].quality).toBe(23)
-        expect(items[1].quality).toBe(50)
+      })
+
+      it('should increase quality value by 3 when sellIn is between 5 days and 0 - but never more than 50', () => {
+        const gildedRose = new Shop([
+          new Item('Backstage passes to a TAFKAL80ETC concert', 5, 48)
+        ])
+        const items = gildedRose.updateQuality()
+        expect(items[0].sellIn).toBe(4)
+        expect(items[0].quality).toBe(50)
       })
 
       it('should drop quality value to 0 when sellIn has passed', () => {
