@@ -17,14 +17,19 @@ const ItemHandler = {
   'Backstage passes to a TAFKAL80ETC concert': (item) => {
     item.sellIn -= 1
 
-    if (item.sellIn >= 11) {
-      item.quality += 1
-    } else if (item.sellIn >= 6) {
-      item.quality += 2
-    } else if (item.sellIn > 0) {
-      item.quality += 3
-    } else {
-      item.quality = 0
+    switch (true) {
+      case (item.sellIn >= 11):
+        item.quality += 1
+        break
+      case (item.sellIn >= 6):
+        item.quality += 2
+        break
+      case (item.sellIn > 0):
+        item.quality += 3
+        break
+      default:
+        item.quality = 0
+        break
     }
 
     if (item.quality > 50) {
